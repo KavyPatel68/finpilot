@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FinPilot — AI Personal Finance Decision-Support Agent</title>
+  <meta name="description" content="Autonomous, private, local-first finance intelligence. Ingest bank statements, track budgets, catch duplicate charges, and ask questions with zero cloud fees." />
+  
+  <!-- OpenGraph / Social Meta -->
+  <meta property="og:title" content="FinPilot — AI Personal Finance Decision-Support Agent" />
+  <meta property="og:description" content="Know where your money goes. Decide what to do next. Built by Kavya." />
+  <meta property="og:image" content="videos/poster.jpg" />
+  <meta property="og:type" content="website" />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              dark: '#0C0A09',
+              card: '#181614',
+              border: '#272422',
+              primary: '#6366F1',
+              accent: '#10B981',
+              warning: '#F59E0B',
+              danger: '#EF4444'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #0C0A09;
+      color: #F5F5F4;
+      font-family: 'Inter', sans-serif;
+    }
+    .glow-indigo {
+      box-shadow: 0 0 50px -10px rgba(99, 102, 241, 0.25);
+    }
+    .glow-emerald {
+      box-shadow: 0 0 40px -10px rgba(16, 185, 129, 0.3);
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #181614;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #383532;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-indigo-500 selection:text-white">
+
+  <!-- Header / Navigation -->
+  <header class="sticky top-0 z-50 bg-[#0C0A09]/85 backdrop-blur-md border-b border-brand-border">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-emerald-500 flex items-center justify-center font-extrabold text-white text-lg shadow-lg shadow-indigo-600/30">
+          FP
+        </div>
+        <div>
+          <span class="text-xl font-bold tracking-tight text-white">FinPilot</span>
+          <span class="hidden sm:inline-block ml-2 px-2 py-0.5 text-xs font-semibold rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Local-First</span>
+        </div>
+      </div>
+
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-stone-400">
+        <a href="#video-demo" class="hover:text-white transition-colors">45s Demo</a>
+        <a href="#features" class="hover:text-white transition-colors">Features</a>
+        <a href="#architecture" class="hover:text-white transition-colors">Architecture</a>
+        <a href="#simulation" class="hover:text-white transition-colors">Live Simulation</a>
+      </nav>
+
+      <div class="flex items-center gap-4">
+        <a href="https://github.com/KavyPatel68/finpilot" target="_blank" rel="noopener noreferrer"
+           class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-stone-800 hover:bg-stone-700 border border-stone-700 rounded-lg transition-all shadow-sm">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path>
+          </svg>
+          <span>GitHub</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="relative pt-16 pb-20 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+      
+      <!-- Creator Badge -->
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 text-xs sm:text-sm font-semibold mb-8 glow-emerald">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span>✨ Product Engineering & Architecture • Built by Kavya</span>
+      </div>
+
+      <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white max-w-5xl mx-auto leading-tight sm:leading-none">
+        Know where your money goes. <br class="hidden sm:inline" />
+        <span class="bg-gradient-to-r from-indigo-400 via-purple-300 to-emerald-400 bg-clip-text text-transparent">Decide what to do next.</span>
+      </h1>
+
+      <p class="mt-6 text-lg sm:text-xl text-stone-400 max-w-3xl mx-auto leading-relaxed">
+        FinPilot is an autonomous, private, local-first finance decision support agent. Ingest statements, hunt silent subscription price hikes, eliminate duplicate charges, and ask natural-language questions with <strong>zero cloud fees</strong>.
+      </p>
+
+      <div class="mt-10 flex flex-wrap justify-center items-center gap-4">
+        <a href="#video-demo" class="px-7 py-3.5 rounded-xl font-bold text-base text-white bg-indigo-600 hover:bg-indigo-500 transition-all shadow-lg shadow-indigo-600/30 flex items-center gap-2">
+          <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          Watch 45s Promo Video
+        </a>
+        <a href="https://github.com/KavyPatel68/finpilot/releases/tag/v1.0.0" target="_blank" rel="noopener noreferrer"
+           class="px-7 py-3.5 rounded-xl font-bold text-base text-stone-200 bg-stone-800 hover:bg-stone-700 border border-stone-700 transition-all">
+          Download v1.0.0 Release
+        </a>
+      </div>
+
+      <!-- Quick Metrics Bar -->
+      <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto text-left">
+        <div class="p-5 rounded-2xl bg-brand-card border border-brand-border">
+          <div class="text-2xl font-bold text-emerald-400">42 ms</div>
+          <div class="text-xs text-stone-400 mt-1">168 Rows Ingested & Classified</div>
+        </div>
+        <div class="p-5 rounded-2xl bg-brand-card border border-brand-border">
+          <div class="text-2xl font-bold text-indigo-400">₹0.00</div>
+          <div class="text-xs text-stone-400 mt-1">100% Free Offline Mode</div>
+        </div>
+        <div class="p-5 rounded-2xl bg-brand-card border border-brand-border">
+          <div class="text-2xl font-bold text-purple-400">0 Tokens</div>
+          <div class="text-xs text-stone-400 mt-1">Deterministic Cached Analytics</div>
+        </div>
+        <div class="p-5 rounded-2xl bg-brand-card border border-brand-border">
+          <div class="text-2xl font-bold text-amber-400">100% Private</div>
+          <div class="text-xs text-stone-400 mt-1">On-Device SQLite WAL Storage</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Video Showcase Section -->
+  <section id="video-demo" class="py-16 bg-[#110F0E] border-y border-brand-border">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-10">
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">45-Second Feature Reel</h2>
+        <p class="mt-3 text-stone-400 text-base">Watch the fast-paced walkthrough covering ingestion, anomaly detection, subscription price tracking, and offline decision support.</p>
+      </div>
+
+      <!-- Video Player Card -->
+      <div class="bg-brand-card rounded-3xl border border-brand-border overflow-hidden shadow-2xl glow-indigo">
+        
+        <!-- Language Switcher Bar -->
+        <div class="p-3 sm:p-4 bg-stone-900 border-b border-brand-border flex flex-wrap items-center justify-between gap-3">
+          <div class="flex items-center gap-2 text-xs font-semibold text-stone-400 uppercase tracking-wider">
+            <span>Audio & Subtitle Edition:</span>
+          </div>
+          <div class="flex flex-wrap gap-2" id="lang-buttons">
+            <button onclick="switchVideo('en', this)" class="lang-btn active px-3.5 py-1.5 text-xs sm:text-sm font-semibold rounded-lg bg-indigo-600 text-white transition-all">
+              🇬🇧 English Subtitles
+            </button>
+            <button onclick="switchVideo('hi', this)" class="lang-btn px-3.5 py-1.5 text-xs sm:text-sm font-semibold rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-300 transition-all">
+              🇮🇳 Hindi (हिंदी)
+            </button>
+            <button onclick="switchVideo('gu', this)" class="lang-btn px-3.5 py-1.5 text-xs sm:text-sm font-semibold rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-300 transition-all">
+              🇮🇳 Gujarati (ગુજરાતી)
+            </button>
+            <button onclick="switchVideo('clean', this)" class="lang-btn px-3.5 py-1.5 text-xs sm:text-sm font-semibold rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-300 transition-all">
+              🎬 Clean Master
+            </button>
+          </div>
+        </div>
+
+        <!-- Video Element -->
+        <div class="relative aspect-video w-full bg-black">
+          <video id="promo-video" controls poster="videos/poster.jpg" class="w-full h-full object-contain">
+            <source id="video-source" src="videos/FinPilot_promo_en.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+
+        <!-- Video Footer & Direct Downloads -->
+        <div class="p-4 sm:p-6 bg-stone-900/50 flex flex-wrap items-center justify-between gap-4 text-xs sm:text-sm text-stone-400">
+          <div class="flex items-center gap-2">
+            <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+            <span>Duration: <strong>45.0s</strong> • 1920×1080 @ 30fps • Normalized Audio (-16 LUFS)</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span>Direct Downloads:</span>
+            <a id="download-mp4" href="videos/FinPilot_promo_en.mp4" download class="text-indigo-400 hover:text-indigo-300 underline font-medium">MP4 Video</a>
+            <span>•</span>
+            <a id="download-srt" href="videos/FinPilot_en.srt" download class="text-indigo-400 hover:text-indigo-300 underline font-medium">SRT Subtitles</a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Core Features Grid -->
+  <section id="features" class="py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <h2 class="text-xs font-bold text-indigo-400 tracking-widest uppercase">Intelligent Architecture</h2>
+        <p class="mt-2 text-3xl sm:text-5xl font-extrabold text-white tracking-tight">Engineered for absolute clarity</p>
+        <p class="mt-4 text-stone-400 text-base sm:text-lg">No third-party logins, no bank scraping vulnerabilities, no privacy leaks.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        
+        <!-- Feature 1 -->
+        <div class="p-8 rounded-2xl bg-brand-card border border-brand-border hover:border-indigo-500/50 transition-all group">
+          <div class="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/25 flex items-center justify-center text-indigo-400 text-xl font-bold mb-6 group-hover:scale-110 transition-transform">
+            ⚡
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">Statement Ingestion Engine</h3>
+          <p class="text-stone-400 text-sm leading-relaxed mb-4">
+            Upload CSV, Excel, or PDF statements. FinPilot normalizes vendor names, deduplicates entries, and excludes internal transfers from outflow totals automatically.
+          </p>
+          <div class="text-xs font-semibold text-indigo-400 bg-indigo-500/10 px-3 py-1.5 rounded-md inline-block">
+            168 rows in 42ms
+          </div>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="p-8 rounded-2xl bg-brand-card border border-brand-border hover:border-amber-500/50 transition-all group">
+          <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/25 flex items-center justify-center text-amber-400 text-xl font-bold mb-6 group-hover:scale-110 transition-transform">
+            🔍
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">Subscription & Anomaly Radar</h3>
+          <p class="text-stone-400 text-sm leading-relaxed mb-4">
+            Flags silent price increases (such as Netflix hiking to ₹799) and catches duplicate anomaly charges within 24-48 hours for immediate refund claims.
+          </p>
+          <div class="text-xs font-semibold text-amber-400 bg-amber-500/10 px-3 py-1.5 rounded-md inline-block">
+            Seeded anomaly detection verified
+          </div>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="p-8 rounded-2xl bg-brand-card border border-brand-border hover:border-emerald-500/50 transition-all group">
+          <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/25 flex items-center justify-center text-emerald-400 text-xl font-bold mb-6 group-hover:scale-110 transition-transform">
+            📊
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">Executive Cash Flow Cockpit</h3>
+          <p class="text-stone-400 text-sm leading-relaxed mb-4">
+            Interactive real-time charts show total outflow, net surplus, and savings percentage. Keeps your emergency fund and roadmap visually clear.
+          </p>
+          <div class="text-xs font-semibold text-emerald-400 bg-emerald-500/10 px-3 py-1.5 rounded-md inline-block">
+            38.4% Savings Rate Dashboard
+          </div>
+        </div>
+
+        <!-- Feature 4 -->
+        <div class="p-8 rounded-2xl bg-brand-card border border-brand-border hover:border-purple-500/50 transition-all group">
+          <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/25 flex items-center justify-center text-purple-400 text-xl font-bold mb-6 group-hover:scale-110 transition-transform">
+            💬
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">Offline Decision Copilot</h3>
+          <p class="text-stone-400 text-sm leading-relaxed mb-4">
+            Ask natural language questions like <em>"Can I afford a ₹15,000 gadget this month?"</em> and receive instant, mathematically verified answers with zero latency.
+          </p>
+          <div class="text-xs font-semibold text-purple-400 bg-purple-500/10 px-3 py-1.5 rounded-md inline-block">
+            Sub-5ms deterministic responses
+          </div>
+        </div>
+
+        <!-- Feature 5 -->
+        <div class="p-8 rounded-2xl bg-brand-card border border-brand-border hover:border-blue-500/50 transition-all group">
+          <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/25 flex items-center justify-center text-blue-400 text-xl font-bold mb-6 group-hover:scale-110 transition-transform">
+            🛡️
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">Strict Non-Advisor Guardrails</h3>
+          <p class="text-stone-400 text-sm leading-relaxed mb-4">
+            Engineered with guardrails that strictly refuse speculative stock or crypto trading tips, keeping advice anchored to pragmatic behavior and verified numbers.
+          </p>
+          <div class="text-xs font-semibold text-blue-400 bg-blue-500/10 px-3 py-1.5 rounded-md inline-block">
+            Deterministic Policy Enforced
+          </div>
+        </div>
+
+        <!-- Feature 6 -->
+        <div class="p-8 rounded-2xl bg-brand-card border border-brand-border hover:border-rose-500/50 transition-all group">
+          <div class="w-12 h-12 rounded-xl bg-rose-500/10 border border-rose-500/25 flex items-center justify-center text-rose-400 text-xl font-bold mb-6 group-hover:scale-110 transition-transform">
+            📑
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">Executive PDF Audit Reports</h3>
+          <p class="text-stone-400 text-sm leading-relaxed mb-4">
+            Generate printable, high-resolution monthly A4 financial summaries with cash-flow audits, category pie charts, and an actionable decision checklist.
+          </p>
+          <div class="text-xs font-semibold text-rose-400 bg-rose-500/10 px-3 py-1.5 rounded-md inline-block">
+            ReportLab Native Engine
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Interactive Scenario Simulation Widget -->
+  <section id="simulation" class="py-16 bg-[#110F0E] border-y border-brand-border">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center mb-8">
+        <span class="text-xs font-bold text-emerald-400 tracking-wider uppercase">Interactive Simulator</span>
+        <h2 class="text-3xl font-extrabold text-white mt-1">Simulate Spending Adjustments</h2>
+        <p class="text-stone-400 text-sm mt-2">See how small daily decisions directly accelerate your financial target.</p>
+      </div>
+
+      <div class="p-8 rounded-3xl bg-brand-card border border-brand-border shadow-xl">
+        <div class="space-y-6">
+          <div>
+            <div class="flex justify-between items-center mb-2">
+              <label class="text-sm font-semibold text-stone-300">Monthly Discretionary Spend Cut:</label>
+              <span id="slider-val" class="text-lg font-bold text-emerald-400">₹2,000 / month</span>
+            </div>
+            <input id="cut-slider" type="range" min="500" max="10000" step="500" value="2000"
+                   class="w-full h-2 bg-stone-700 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+                   oninput="updateSim(this.value)">
+            <div class="flex justify-between text-xs text-stone-500 mt-1">
+              <span>₹500</span>
+              <span>₹5,000</span>
+              <span>₹10,000</span>
+            </div>
+          </div>
+
+          <!-- Result card -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t border-brand-border text-center">
+            <div class="p-4 rounded-xl bg-stone-900/60 border border-stone-800">
+              <div class="text-xs text-stone-400">Emergency Fund Target</div>
+              <div class="text-xl font-bold text-white mt-1">₹1,00,000</div>
+            </div>
+            <div class="p-4 rounded-xl bg-stone-900/60 border border-stone-800">
+              <div class="text-xs text-stone-400">Annual Wealth Saved</div>
+              <div id="sim-annual" class="text-xl font-bold text-indigo-400 mt-1">₹24,000 / yr</div>
+            </div>
+            <div class="p-4 rounded-xl bg-stone-900/60 border border-stone-800">
+              <div class="text-xs text-stone-400">Goal Reached Faster</div>
+              <div id="sim-faster" class="text-xl font-bold text-emerald-400 mt-1">~2.8 Months Earlier</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Creator & Engineering Showcase Card -->
+  <section class="py-20 text-center">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="p-10 rounded-3xl bg-gradient-to-b from-[#181614] to-[#0E0C0B] border border-brand-border shadow-2xl relative overflow-hidden">
+        <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-indigo-500 to-emerald-400 flex items-center justify-center font-extrabold text-white text-2xl mx-auto mb-6 shadow-xl shadow-indigo-600/30">
+          FP
+        </div>
+        
+        <h3 class="text-2xl sm:text-3xl font-extrabold text-white">Built by Kavya</h3>
+        <p class="text-stone-400 text-sm sm:text-base mt-2 max-w-xl mx-auto leading-relaxed">
+          Designed and engineered as a full-stack, autonomous personal finance system. Built with Python FastAPI, React TypeScript, SQLite WAL mode, and zero cloud vendor lock-in.
+        </p>
+
+        <div class="mt-8 flex flex-wrap justify-center gap-3">
+          <a href="https://github.com/KavyPatel68/finpilot" target="_blank" rel="noopener noreferrer"
+             class="px-6 py-2.5 rounded-xl font-semibold text-sm text-white bg-indigo-600 hover:bg-indigo-500 transition-all">
+            Star on GitHub
+          </a>
+          <a href="https://github.com/KavyPatel68/finpilot/releases/tag/v1.0.0" target="_blank" rel="noopener noreferrer"
+             class="px-6 py-2.5 rounded-xl font-semibold text-sm text-stone-300 bg-stone-800 hover:bg-stone-700 border border-stone-700 transition-all">
+            View Release Assets
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="mt-auto border-t border-brand-border bg-[#0C0A09] py-8 text-xs text-stone-500">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p>© 2026 FinPilot. Open source and free forever. Built by Kavya.</p>
+      <div class="flex items-center gap-6">
+        <a href="https://github.com/KavyPatel68/finpilot" class="hover:text-stone-300">GitHub Repo</a>
+        <a href="https://github.com/KavyPatel68/finpilot/releases" class="hover:text-stone-300">Releases</a>
+        <a href="https://github.com/KavyPatel68/finpilot/blob/main/README.md" class="hover:text-stone-300">Documentation</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Script for Video Switcher & Simulator -->
+  <script>
+    const videos = {
+      en: {
+        mp4: 'videos/FinPilot_promo_en.mp4',
+        srt: 'videos/FinPilot_en.srt'
+      },
+      hi: {
+        mp4: 'videos/FinPilot_promo_hi.mp4',
+        srt: 'videos/FinPilot_hi.srt'
+      },
+      gu: {
+        mp4: 'videos/FinPilot_promo_gu.mp4',
+        srt: 'videos/FinPilot_gu.srt'
+      },
+      clean: {
+        mp4: 'videos/FinPilot_promo_clean.mp4',
+        srt: ''
+      }
+    };
+
+    function switchVideo(lang, btn) {
+      const video = document.getElementById('promo-video');
+      const source = document.getElementById('video-source');
+      const downloadMp4 = document.getElementById('download-mp4');
+      const downloadSrt = document.getElementById('download-srt');
+
+      const isPlaying = !video.paused;
+      const currentTime = video.currentTime;
+
+      source.src = videos[lang].mp4;
+      downloadMp4.href = videos[lang].mp4;
+      if (videos[lang].srt) {
+        downloadSrt.href = videos[lang].srt;
+        downloadSrt.style.display = 'inline';
+      } else {
+        downloadSrt.style.display = 'none';
+      }
+
+      video.load();
+      video.currentTime = currentTime;
+      if (isPlaying) video.play();
+
+      document.querySelectorAll('.lang-btn').forEach(b => {
+        b.classList.remove('bg-indigo-600', 'text-white');
+        b.classList.add('bg-stone-800', 'text-stone-300');
+      });
+      btn.classList.remove('bg-stone-800', 'text-stone-300');
+      btn.classList.add('bg-indigo-600', 'text-white');
+    }
+
+    function updateSim(val) {
+      val = parseInt(val, 10);
+      document.getElementById('slider-val').innerText = '₹' + val.toLocaleString('en-IN') + ' / month';
+      const annual = val * 12;
+      document.getElementById('sim-annual').innerText = '₹' + annual.toLocaleString('en-IN') + ' / yr';
+      
+      const target = 100000;
+      const baselineMonthly = 5000;
+      const monthsBaseline = target / baselineMonthly;
+      const monthsNew = target / (baselineMonthly + val);
+      const savedMonths = (monthsBaseline - monthsNew).toFixed(1);
+      document.getElementById('sim-faster').innerText = '~' + savedMonths + ' Months Earlier';
+    }
+  </script>
+</body>
+</html>
