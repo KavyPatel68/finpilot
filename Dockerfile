@@ -46,18 +46,10 @@ COPY backend/ ./
 # Copy built frontend assets from builder stage
 COPY --from=frontend-builder /frontend/dist /app/frontend/dist
 
-# Copy entrypoint startup script
-COPY start.sh /app/start.sh
-RUN tr -d '\r' < /app/start.sh > /app/start_unix.sh && \
-    mv /app/start_unix.sh /app/start.sh && \
-    chmod +x /app/start.sh
-
 # Ensure data and uploads directories exist
 RUN mkdir -p /app/backend/data/uploads
 
 EXPOSE 8000
 
-HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
-  CMD curl -f http://localhost:${PORT:-8000}/api/health || exit 1
-
-ENTRYPOINT ["/bin/bash", "/app/start.sh"]
+# Start command with dynamic Render PORT expansion
+CMD ["sh", "-c", "mkdir -p data/uploads && (python -m alembic upgrade head || true) && exec python -m uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
