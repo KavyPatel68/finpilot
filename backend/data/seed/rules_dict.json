@@ -1,0 +1,23 @@
+{
+  "rules": [
+    {"keywords": ["salary", "sal cr", "sal credit"], "category": "Income", "direction": "income"},
+    {"keywords": ["rent", "house rent"], "category": "Housing/Rent", "direction": "expense"},
+    {"keywords": ["netflix"], "category": "Subscriptions"},
+    {"keywords": ["spotify"], "category": "Subscriptions"},
+    {"keywords": ["amazon prime"], "category": "Subscriptions"},
+    {"keywords": ["zomato", "swiggy"], "category": "Dining"},
+    {"keywords": ["ola", "uber", "rapido"], "category": "Transport"},
+    {"keywords": ["hpcl", "bpcl", "iocl", "indian oil", "petrol", "fuel"], "category": "Fuel"},
+    {"keywords": ["bigbasket", "blinkit", "grofers", "zepto", "dmart"], "category": "Groceries"},
+    {"keywords": ["amazon", "flipkart", "myntra", "ajio", "nykaa"], "category": "Shopping"},
+    {"keywords": ["electricity", "bescom", "mseb", "tata power", "adani electricity", "torrent power", "torrent", "jio"], "category": "Utilities"},
+    {"keywords": ["emi", "loan", "home loan", "car loan"], "category": "EMI/Loans"},
+    {"keywords": ["atm", "cash withdrawal"], "category": "Other"},
+    {"keywords": ["insurance", "lic", "hdfc life", "term plan"], "category": "Insurance"},
+    {"keywords": ["hospital", "clinic", "pharmacy", "apollo", "1mg", "netmeds"], "category": "Health"},
+    {"keywords": ["school", "college", "university", "udemy", "coursera"], "category": "Education"},
+    {"keywords": ["makemytrip", "irctc", "yatra", "goibibo", "hotel", "airbnb"], "category": "Travel"},
+    {"keywords": ["transfer", "imps", "neft", "rtgs"], "category": "Transfers"},
+    {"keywords": ["bank charges", "gst", "service charge", "late fee"], "category": "Fees/Charges"}
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "seed_version": "1.0",
+  "random_seed": 42,
+  "user_id": 1,
+  "date_range": {"start": "2024-04-01", "end": "2024-09-30"},
+  "planted_scenarios": {
+    "salary": {
+      "description": "₹85,000 income on 1st of each month",
+      "amount_minor": 8500000,
+      "frequency": "monthly",
+      "merchant": "SALARY CREDIT",
+      "months": ["2024-04", "2024-05", "2024-06", "2024-07", "2024-08", "2024-09"]
+    },
+    "subscription_price_hike": {
+      "description": "Netflix price increased from ₹649 to ₹799 in Aug 2024",
+      "merchant": "Netflix",
+      "old_amount_minor": 64900,
+      "new_amount_minor": 79900,
+      "hike_month": "2024-08"
+    },
+    "duplicate_charge": {
+      "description": "Netflix charged twice on 2024-06-10",
+      "merchant": "Netflix",
+      "date": "2024-06-10",
+      "amount_minor": 64900,
+      "count": 2
+    },
+    "spending_spike": {
+      "description": "Shopping spike in July 2024 (₹35,000 vs typical ₹2,000-5,000)",
+      "month": "2024-07",
+      "category": "Shopping",
+      "total_amount_minor": 3500000,
+      "typical_range_minor": [200000, 500000]
+    },
+    "own_account_transfer": {
+      "description": "₹10,000 transfer from savings to credit card payment, monthly",
+      "amount_minor": 1000000,
+      "is_transfer": true,
+      "accounts": ["HDFC Savings", "HDFC Credit Card"]
+    },
+    "recurring_subscriptions": [
+      {"merchant": "Netflix", "frequency": "monthly", "base_amount_minor": 64900},
+      {"merchant": "Spotify", "frequency": "monthly", "amount_minor": 11900},
+      {"merchant": "Amazon Prime", "frequency": "quarterly", "amount_minor": 149900}
+    ],
+    "emi": {
+      "merchant": "Home Loan EMI",
+      "amount_minor": 1250000,
+      "frequency": "monthly",
+      "day_of_month": 7
+    },
+    "refund": {
+      "merchant": "Amazon",
+      "month": "2024-08",
+      "amount_minor": 120000,
+      "category": "Shopping",
+      "subcategory": "Refund",
+      "direction": "income"
+    },
+    "ambiguous_merchant": {
+      "raw_description": "NEFT CR-GARG ENT 12345",
+      "category": "Other",
+      "note": "Could be income or transfer; needs LLM or user clarification"
+    }
+  },
+  "expected_monthly_totals": {
+    "2024-07": {
+      "note": "Shopping spike month",
+      "shopping_min_minor": 3000000
+    }
+  },
+  "qa_anchors": {
+    "top_category_by_spend": "EMI/Loans or Shopping (July spike month)",
+    "subscription_count": 3,
+    "anomaly_month": "2024-07",
+    "price_hike_month": "2024-08"
+  }
+}

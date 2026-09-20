@@ -1,0 +1,12 @@
+{
+  "rules": [
+    {
+      "keywords": [
+        "unknown merchant"
+      ],
+      "category": "Groceries",
+      "subcategory": null,
+      "direction": null
+    }
+  ]
+}

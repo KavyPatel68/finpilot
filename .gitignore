@@ -1,0 +1,47 @@
+# Environments & Dependencies
+.venv/
+venv/
+env/
+node_modules/
+
+# Python cache & bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local databases & uploads
+*.db
+*.sqlite
+*.sqlite3
+data/*.db
+data/*.sqlite
+data/uploads/*
+!data/uploads/.gitkeep
+
+# Environment variables & secrets
+.env
+.env.local
+.env.*.local
+
+# Build outputs
+dist/
+dist-ssr/
+build/
+*.egg-info/
+.eggs/
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Brag intermediate files
+brag-output/
+*.poster.mp4
+test_clip_*.mp4
+finpilot_demo_47s.*
+FinPilot_demo_47s_final.*

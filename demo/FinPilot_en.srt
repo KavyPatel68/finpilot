@@ -1,0 +1,34 @@
+1
+00:00:00,500 --> 00:00:04,800
+Know where your money goes.
+Decide what to do next with FinPilot.
+
+2
+00:00:05,200 --> 00:00:11,500
+Drop any bank statement.
+168 transactions parsed in milliseconds.
+
+3
+00:00:12,200 --> 00:00:18,500
+Detect subscription price hikes
+and catch duplicate anomaly charges.
+
+4
+00:00:19,200 --> 00:00:25,500
+Track budgets and goals in real time
+with clean interactive progress charts.
+
+5
+00:00:26,200 --> 00:00:33,500
+Ask natural language questions offline.
+Instant answers with zero cloud fees.
+
+6
+00:00:34,200 --> 00:00:39,500
+Generate monthly executive summaries.
+Low-token AI: fast, private, and cheap.
+
+7
+00:00:40,200 --> 00:00:44,800
+FinPilot: private, autonomous intelligence.
+Built by Kavya.
