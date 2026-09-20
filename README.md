@@ -5,6 +5,19 @@ FinPilot is an intelligent personal finance decision-support assistant designed 
 
 ---
 
+## 🌐 Live Cloud Demo & Deployment
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/KavyPatel68/finpilot)
+[![GitHub Showcase Site](https://img.shields.io/badge/Showcase%20Site-Live%20on%20GitHub%20Pages-10B981?style=flat&logo=github)](https://kavypatel68.github.io/finpilot/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
+* **🚀 Public Live Demo**: **[https://finpilot.onrender.com](https://finpilot.onrender.com)**  
+  *(Note: Render free tier spins down on idle; the first request wakes up the container in ~40–50s).*
+* **📖 One-Click Deployment Guide**: **[DEPLOY.md](DEPLOY.md)** (Full Render Blueprint and manual setup steps).
+* **✨ Demo Features**: Pre-seeded with 6 months of deterministic Indian banking data (salary, rent, Swiggy, Netflix price hike, June duplicate charge, budgets, and goals), instant "Reset demo data" button, and 1-click sample statement ingestion.
+
+---
+
 ## 🎬 45-Second Demo & Highlight Reel
 
 [![FinPilot Demo Preview](demo/poster.jpg)](demo/FinPilot_promo_en.mp4)

@@ -1,0 +1,17 @@
+.git
+.github
+.agents
+.venv
+backend/.venv
+node_modules
+frontend/node_modules
+*.pyc
+__pycache__
+*.db
+data/*.db
+data/uploads/*
+!data/uploads/.gitkeep
+brag-output
+*.mp4
+*.jpg
+*.srt

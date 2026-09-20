@@ -1,4 +1,4 @@
-const BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8000'
+const BASE_URL = import.meta.env.VITE_API_URL ?? (import.meta.env.PROD ? '' : 'http://localhost:8000')
 
 export class ApiError extends Error {
   constructor(public status: number, message: string) {
@@ -20,4 +20,14 @@ export async function apiFetch<T>(
     throw new ApiError(res.status, body)
   }
   return res.json() as Promise<T>
+}
+
+export async function resetDemoData(userId: number = 1): Promise<{ status: string; message: string; transaction_count: number }> {
+  return apiFetch<{ status: string; message: string; transaction_count: number }>(`/api/demo/reset?user_id=${userId}`, {
+    method: 'POST',
+  })
+}
+
+export async function getDemoStatus(): Promise<{ demo_mode: boolean; transaction_count: number; seeded: boolean }> {
+  return apiFetch<{ demo_mode: boolean; transaction_count: number; seeded: boolean }>('/api/demo/status')
 }

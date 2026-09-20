@@ -36,8 +36,13 @@ async def upload_file(
     user_dir = os.path.join(settings.UPLOADS_DIR, str(user_id), doc_uuid)
     os.makedirs(user_dir, exist_ok=True)
     
-    file_path = os.path.join(user_dir, file.filename)
     content = await file.read()
+    if settings.DEMO_MODE and len(content) > 2 * 1024 * 1024:
+        raise HTTPException(
+            status_code=413,
+            detail="In Demo Mode, file uploads are limited to 2 MB. Please upload a smaller sample or click 'Load Sample Statement'."
+        )
+    file_path = os.path.join(user_dir, file.filename)
     with open(file_path, "wb") as f:
         f.write(content)
 
@@ -341,4 +346,94 @@ def seed_demo_data(
         "months_covered": 6,
         "message": f"Demo data loaded successfully: {txn_count} transactions across 6 months (Apr - Sep 2024).",
     }
+
+
+@router.post("/upload/sample-statement", response_model=UploadResponse)
+async def upload_sample_statement(
+    account_id: int = Query(1),
+    user_id: int = Query(1),
+    db: Session = Depends(get_db)
+):
+    """Imports the bundled sample bank statement (170 rows, HDFC CSV format) without requiring user to provide a file."""
+    from app.models.account import Account, AccountType
+    acc = db.query(Account).filter(Account.id == account_id).first()
+    if not acc:
+        acc = Account(id=account_id, user_id=user_id, name="HDFC Savings", type=AccountType.bank, currency="INR")
+        db.add(acc)
+        db.commit()
+
+    sample_src = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "data", "sample_statement.csv")
+    if not os.path.exists(sample_src):
+        raise HTTPException(status_code=404, detail="Bundled sample statement file not found.")
+
+    doc_uuid = str(uuid.uuid4())
+    user_dir = os.path.join(settings.UPLOADS_DIR, str(user_id), doc_uuid)
+    os.makedirs(user_dir, exist_ok=True)
+    file_path = os.path.join(user_dir, "sample_hdfc_statement.csv")
+    
+    with open(sample_src, "rb") as src, open(file_path, "wb") as dst:
+        dst.write(src.read())
+
+    doc = Document(
+        user_id=user_id,
+        account_id=account_id,
+        filename="sample_hdfc_statement.csv",
+        file_path=file_path,
+        file_type=FileType.csv,
+        status=DocumentStatus.processing,
+        parse_errors=[]
+    )
+    db.add(doc)
+    db.commit()
+    db.refresh(doc)
+
+    parse_result = parse_file(file_path, file_type='csv')
+    total_rows = parse_result.total_rows if parse_result.total_rows > 0 else (len(parse_result.transactions) + len(parse_result.errors))
+
+    dedup_result = deduplicate(parse_result.transactions, db, user_id, account_id)
+
+    new_txns: list[Transaction] = []
+    for txn_parsed in dedup_result.to_insert:
+        txn = Transaction(
+            user_id=user_id,
+            account_id=account_id,
+            document_id=doc.id,
+            date=txn_parsed.date,
+            amount_minor=txn_parsed.amount_minor,
+            direction=_DIRECTION_MAP[txn_parsed.direction],
+            balance_minor=txn_parsed.balance_minor,
+            raw_description=txn_parsed.raw_description,
+            merchant_normalized=txn_parsed.merchant_hint,
+            payment_method=txn_parsed.payment_method,
+            category='Other',
+            category_source=CategorySource.rule,
+        )
+        db.add(txn)
+        new_txns.append(txn)
+
+    db.flush()
+
+    if new_txns:
+        await categorize_transactions(new_txns, db, user_id=user_id)
+
+    doc.status = DocumentStatus.done
+    doc.row_count = total_rows
+    doc.imported_count = len(dedup_result.to_insert)
+    doc.duplicate_count = dedup_result.duplicate_count
+    doc.parse_errors = [{"row": err.row, "message": err.reason} for err in parse_result.errors]
+    doc.processed_at = datetime.now(timezone.utc)
+
+    db.commit()
+
+    return UploadResponse(
+        document_id=doc.id,
+        filename=doc.filename,
+        status='done',
+        row_count=total_rows,
+        imported_count=len(dedup_result.to_insert),
+        duplicate_count=dedup_result.duplicate_count,
+        parse_errors=doc.parse_errors,
+        headers=parse_result.headers,
+        preview_rows=parse_result.preview_rows,
+    )
 

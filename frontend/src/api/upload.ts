@@ -1,7 +1,7 @@
 import { apiFetch } from './client'
 import type { Document, UploadResponse, ColumnMapping } from '../types'
 
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+const BASE_URL = import.meta.env.VITE_API_URL ?? (import.meta.env.PROD ? '' : 'http://localhost:8000')
 
 export async function uploadDocument(
   file: File,
@@ -27,6 +27,15 @@ export async function uploadDocument(
     throw new Error(`Upload failed (${res.status}): ${errText || res.statusText}`)
   }
   return res.json()
+}
+
+export async function loadSampleStatement(
+  accountId: number = 1,
+  userId: number = 1
+): Promise<UploadResponse> {
+  return apiFetch<UploadResponse>(`/api/upload/sample-statement?account_id=${accountId}&user_id=${userId}`, {
+    method: 'POST',
+  })
 }
 
 export async function confirmMapping(
@@ -64,4 +73,3 @@ export async function seedDemoData(
     }
   )
 }
-

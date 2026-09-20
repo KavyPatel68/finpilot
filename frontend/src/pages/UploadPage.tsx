@@ -18,6 +18,7 @@ import {
   getDocuments,
   deleteDocument,
   seedDemoData,
+  loadSampleStatement,
 } from '../api/upload'
 import type { Document, UploadResponse, ColumnMapping } from '../types'
 import { useMonth } from '../context/MonthContext'
@@ -28,6 +29,7 @@ export function UploadPage() {
   const [isLoadingList, setIsLoadingList] = useState(false)
   const [isUploading, setIsUploading] = useState(false)
   const [isSeedingDemo, setIsSeedingDemo] = useState(false)
+  const [isLoadingSample, setIsLoadingSample] = useState(false)
   const [lastUploadResult, setLastUploadResult] = useState<UploadResponse | null>(null)
   const [notification, setNotification] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
   const [mappingModalDoc, setMappingModalDoc] = useState<{
@@ -129,6 +131,26 @@ export function UploadPage() {
     }
   }
 
+  const handleLoadSampleStatement = async () => {
+    setIsLoadingSample(true)
+    setNotification(null)
+    try {
+      const result = await loadSampleStatement(1, 1)
+      setLastUploadResult(result)
+      await loadDocuments()
+      await refreshMonths()
+      setNotification({
+        type: 'success',
+        message: `Sample HDFC statement imported successfully! ${result.imported_count} transactions ingested (${result.duplicate_count} duplicates skipped).`,
+      })
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Failed to load sample statement'
+      setNotification({ type: 'error', message: msg })
+    } finally {
+      setIsLoadingSample(false)
+    }
+  }
+
   const handleDelete = async (docId: number) => {
     if (!confirm('Delete this statement document and remove all its imported transactions?')) return
     try {
@@ -200,18 +222,32 @@ export function UploadPage() {
           </p>
         </div>
 
-        {/* Load Demo Data Button (Clean Outline Button) */}
-        <button
-          onClick={handleLoadDemo}
-          disabled={isSeedingDemo || isUploading}
-          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-colors
-            border border-hairline bg-surface hover:bg-canvas text-content-primary
-            disabled:opacity-40 disabled:cursor-not-allowed"
-          title="Instantly load 6 months of pre-built synthetic transactions with planted scenarios"
-        >
-          <SparklesIcon className={`w-3.5 h-3.5 text-[#4F46E5] dark:text-[#818CF8] ${isSeedingDemo ? 'animate-spin' : ''}`} />
-          <span>{isSeedingDemo ? 'Loading Demo...' : 'Load Demo Data (6 Months)'}</span>
-        </button>
+        {/* Demo Action Buttons */}
+        <div className="flex items-center gap-2 flex-wrap">
+          <button
+            onClick={handleLoadSampleStatement}
+            disabled={isLoadingSample || isUploading}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors
+              border border-indigo-500/30 bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-700 dark:text-indigo-300
+              disabled:opacity-40 disabled:cursor-not-allowed shadow-sm"
+            title="Import bundled HDFC sample statement (170 rows CSV)"
+          >
+            <DocumentTextIcon className={`w-3.5 h-3.5 ${isLoadingSample ? 'animate-spin' : ''}`} />
+            <span>{isLoadingSample ? 'Importing Sample...' : 'Load Sample Statement'}</span>
+          </button>
+
+          <button
+            onClick={handleLoadDemo}
+            disabled={isSeedingDemo || isUploading}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors
+              border border-hairline bg-surface hover:bg-canvas text-content-primary
+              disabled:opacity-40 disabled:cursor-not-allowed"
+            title="Instantly load 6 months of pre-built synthetic transactions with planted scenarios"
+          >
+            <SparklesIcon className={`w-3.5 h-3.5 text-[#4F46E5] dark:text-[#818CF8] ${isSeedingDemo ? 'animate-spin' : ''}`} />
+            <span>{isSeedingDemo ? 'Loading Demo...' : 'Load Demo Data (6 Months)'}</span>
+          </button>
+        </div>
       </div>
 
       {/* Notification Toast */}
@@ -241,7 +277,15 @@ export function UploadPage() {
       )}
 
       {/* Main Drag & Drop Zone */}
-      <UploadZone onUpload={handleUpload} isLoading={isUploading} />
+      <div className="space-y-2">
+        <UploadZone onUpload={handleUpload} isLoading={isUploading} />
+        <div className="flex items-center gap-2 text-[11px] text-content-muted px-1">
+          <InformationCircleIcon className="w-4 h-4 text-amber-500 shrink-0" />
+          <span>
+            <strong>Demo Mode:</strong> File uploads are capped at 2 MB. For instant testing, click <strong>Load Sample Statement</strong> above to ingest a bundled statement without supplying your own file.
+          </span>
+        </div>
+      </div>
 
       {/* Last Upload Outcome Summary */}
       {lastUploadResult && (

@@ -63,5 +63,7 @@ class Settings(BaseSettings):
     CORS_ORIGINS: List[str] = ["http://localhost:5173", "http://127.0.0.1:5173"]
     DEFAULT_USER_ID: int = 1
     USE_OCR: bool = False
+    DEMO_MODE: bool = False
+    FRONTEND_DIST_DIR: str = "../frontend/dist"
 
 settings = Settings()

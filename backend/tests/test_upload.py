@@ -55,3 +55,28 @@ def test_upload_csv_endpoint(client, db):
     assert dup_data["status"] == "done"
     assert dup_data["imported_count"] == 0
     assert dup_data["duplicate_count"] == 3
+
+
+def test_upload_sample_statement(client, db):
+    response = client.post("/api/upload/sample-statement?account_id=1&user_id=1")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["status"] == "done"
+    assert data["imported_count"] > 0
+    assert data["filename"] == "sample_hdfc_statement.csv"
+
+
+def test_demo_mode_file_limit(client, monkeypatch):
+    from app.config import settings
+    monkeypatch.setattr(settings, "DEMO_MODE", True)
+
+    # 3 MB dummy payload exceeds 2 MB demo cap
+    big_content = b"x" * (3 * 1024 * 1024)
+    response = client.post(
+        "/api/upload",
+        data={"account_id": 1, "user_id": 1},
+        files={"file": ("large_statement.csv", io.BytesIO(big_content), "text/csv")}
+    )
+    assert response.status_code == 413
+    assert "2 MB" in response.json()["detail"]
+

@@ -14,12 +14,17 @@ htmlcov/
 
 # Local databases & uploads
 *.db
+*.db-shm
+*.db-wal
 *.sqlite
 *.sqlite3
-data/*.db
-data/*.sqlite
+data/*.db*
+backend/data/*.db*
 data/uploads/*
 !data/uploads/.gitkeep
+backend/data/uploads/*
+!backend/data/uploads/.gitkeep
+scratch/
 
 # Environment variables & secrets
 .env
